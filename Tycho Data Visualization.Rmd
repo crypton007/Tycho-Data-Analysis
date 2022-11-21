@@ -2,7 +2,8 @@
 title: "Evaluating Homelessness as an Independent risk factor for Hepatitis A"
 author: "Aman Sahani"
 #date: '2022-07-02'
-output: 
+output:
+ rmarkdown::github_document
  prettydoc::html_pretty:
    theme: cayman
    highlight: github
