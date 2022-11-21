@@ -80,6 +80,10 @@ library(highcharter)
     ##   method            from
     ##   as.zoo.data.frame zoo
 
+    ## Highcharts (www.highcharts.com) is a Highsoft software product which is
+
+    ## not free for commercial and Governmental use
+
 ``` r
 library(data.table)
 ```
