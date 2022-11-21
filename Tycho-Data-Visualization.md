@@ -1,24 +1,8 @@
----
-title: "Evaluating Homelessness as an Independent risk factor for Hepatitis A"
-author: "Aman Sahani"
-#date: '2022-07-02'
-output:
- github_document:
-    html_preview: true
- prettydoc::html_pretty:
-   theme: cayman
-   highlight: github
-#editor_options: 
-#  markdown: 
-#    wrap: 72
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+Evaluating Homelessness as an Independent risk factor for Hepatitis A
+================
+Aman Sahani
 
 Data Visualization
-
 
 # Problem Definition
 
@@ -32,9 +16,9 @@ and simultaneously evaluate homelessness as an independent risk factor.
 Hepatitis A is a vaccine-preventable liver infection caused by the
 hepatitis A virus (HAV). HAV is found in the stool and blood of people
 who are infected. Hepatitis A is very contagious. It is spread when
-someone unknowingly ingests the virus --- even in microscopic amounts
---- through close personal contact with an infected person or through
-eating contaminated food or drink.
+someone unknowingly ingests the virus — even in microscopic amounts —
+through close personal contact with an infected person or through eating
+contaminated food or drink.
 
 Symptoms of hepatitis A can last up to 2 months and include fatigue,
 nausea, stomach pain, and jaundice.
@@ -58,30 +42,259 @@ and performing and Exploratory Data Analysis on the subject.
 
 Installing Packages
 
-```{r}
+``` r
 library(dplyr)
+```
+
+    ## 
+    ## Attaching package: 'dplyr'
+
+    ## The following objects are masked from 'package:stats':
+    ## 
+    ##     filter, lag
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     intersect, setdiff, setequal, union
+
+``` r
 library(tidyverse)
+```
+
+    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──
+
+    ## ✔ ggplot2 3.3.5     ✔ purrr   0.3.4
+    ## ✔ tibble  3.1.6     ✔ stringr 1.4.0
+    ## ✔ tidyr   1.2.0     ✔ forcats 0.5.1
+    ## ✔ readr   2.1.2
+
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+
+``` r
 library(highcharter)
+```
+
+    ## Registered S3 method overwritten by 'quantmod':
+    ##   method            from
+    ##   as.zoo.data.frame zoo
+
+``` r
 library(data.table)
+```
+
+    ## 
+    ## Attaching package: 'data.table'
+
+    ## The following object is masked from 'package:purrr':
+    ## 
+    ##     transpose
+
+    ## The following objects are masked from 'package:dplyr':
+    ## 
+    ##     between, first, last
+
+``` r
 library(ggplot2)
 library(hrbrthemes)
+```
+
+    ## NOTE: Either Arial Narrow or Roboto Condensed fonts are required to use these themes.
+
+    ##       Please use hrbrthemes::import_roboto_condensed() to install Roboto Condensed and
+
+    ##       if Arial Narrow is not on your system, please see https://bit.ly/arialnarrow
+
+``` r
 library(corrplot)
+```
+
+    ## Warning: package 'corrplot' was built under R version 4.2.1
+
+    ## corrplot 0.92 loaded
+
+``` r
 library(usmap)
+```
+
+    ## Warning: package 'usmap' was built under R version 4.2.1
+
+``` r
 library(hrbrthemes)
 library(viridis)
+```
+
+    ## Loading required package: viridisLite
+
+``` r
 library(cowplot)
+```
+
+    ## Warning: package 'cowplot' was built under R version 4.2.1
+
+``` r
 #library(plyr)
 libs <- c("dplyr", "ggplot2", "plotly", "reshape2", "magrittr", "ggthemes", "tidyr", "DT", "lubridate", "stringr", "RColorBrewer", "knitr", "highcharter")
 lapply(libs, require, character.only = TRUE)
+```
 
+    ## Loading required package: plotly
+
+    ## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+    ## logical.return = TRUE, : there is no package called 'plotly'
+
+    ## Loading required package: reshape2
+
+    ## 
+    ## Attaching package: 'reshape2'
+
+    ## The following objects are masked from 'package:data.table':
+    ## 
+    ##     dcast, melt
+
+    ## The following object is masked from 'package:tidyr':
+    ## 
+    ##     smiths
+
+    ## Loading required package: magrittr
+
+    ## 
+    ## Attaching package: 'magrittr'
+
+    ## The following object is masked from 'package:purrr':
+    ## 
+    ##     set_names
+
+    ## The following object is masked from 'package:tidyr':
+    ## 
+    ##     extract
+
+    ## Loading required package: ggthemes
+
+    ## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+    ## logical.return = TRUE, : there is no package called 'ggthemes'
+
+    ## Loading required package: DT
+
+    ## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+    ## logical.return = TRUE, : there is no package called 'DT'
+
+    ## Loading required package: lubridate
+
+    ## 
+    ## Attaching package: 'lubridate'
+
+    ## The following object is masked from 'package:cowplot':
+    ## 
+    ##     stamp
+
+    ## The following objects are masked from 'package:data.table':
+    ## 
+    ##     hour, isoweek, mday, minute, month, quarter, second, wday, week,
+    ##     yday, year
+
+    ## The following objects are masked from 'package:base':
+    ## 
+    ##     date, intersect, setdiff, union
+
+    ## Loading required package: RColorBrewer
+
+    ## Loading required package: knitr
+
+    ## [[1]]
+    ## [1] TRUE
+    ## 
+    ## [[2]]
+    ## [1] TRUE
+    ## 
+    ## [[3]]
+    ## [1] FALSE
+    ## 
+    ## [[4]]
+    ## [1] TRUE
+    ## 
+    ## [[5]]
+    ## [1] TRUE
+    ## 
+    ## [[6]]
+    ## [1] FALSE
+    ## 
+    ## [[7]]
+    ## [1] TRUE
+    ## 
+    ## [[8]]
+    ## [1] FALSE
+    ## 
+    ## [[9]]
+    ## [1] TRUE
+    ## 
+    ## [[10]]
+    ## [1] TRUE
+    ## 
+    ## [[11]]
+    ## [1] TRUE
+    ## 
+    ## [[12]]
+    ## [1] TRUE
+    ## 
+    ## [[13]]
+    ## [1] TRUE
+
+``` r
 add.libs <- c("rgeos","rgdal", "raster", "viridis", "gtable", "grid", "haven", "viridisLite")
 lapply(add.libs, require, character.only = TRUE)
 ```
 
+    ## Loading required package: rgeos
+
+    ## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+    ## logical.return = TRUE, : there is no package called 'rgeos'
+
+    ## Loading required package: rgdal
+
+    ## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+    ## logical.return = TRUE, : there is no package called 'rgdal'
+
+    ## Loading required package: raster
+
+    ## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+    ## logical.return = TRUE, : there is no package called 'raster'
+
+    ## Loading required package: gtable
+
+    ## Loading required package: grid
+
+    ## Loading required package: haven
+
+    ## [[1]]
+    ## [1] FALSE
+    ## 
+    ## [[2]]
+    ## [1] FALSE
+    ## 
+    ## [[3]]
+    ## [1] FALSE
+    ## 
+    ## [[4]]
+    ## [1] TRUE
+    ## 
+    ## [[5]]
+    ## [1] TRUE
+    ## 
+    ## [[6]]
+    ## [1] TRUE
+    ## 
+    ## [[7]]
+    ## [1] TRUE
+    ## 
+    ## [[8]]
+    ## [1] TRUE
+
 Loading Tycho Acute Hepatitis A dataset and having a brief look at the
 heading of the table
 
-```{r}
+``` r
 tychodf = read.csv("usa hepatitis a.csv")
 ```
 
@@ -89,16 +302,81 @@ Performing EDA on the dataset.
 
 1.  Looking at the head of the dataset
 
-```{r}
+``` r
 head(tychodf)
 ```
+
+    ##                  ConditionName ConditionSNOMED            PathogenName
+    ## 1 Acute type A viral hepatitis        25102003 Human hepatitis A virus
+    ## 2 Acute type A viral hepatitis        25102003 Human hepatitis A virus
+    ## 3 Acute type A viral hepatitis        25102003 Human hepatitis A virus
+    ## 4 Acute type A viral hepatitis        25102003 Human hepatitis A virus
+    ## 5 Acute type A viral hepatitis        25102003 Human hepatitis A virus
+    ## 6 Acute type A viral hepatitis        25102003 Human hepatitis A virus
+    ##   PathogenTaxonID Fatalities              CountryName CountryISO Admin1Name
+    ## 1          208726          0 UNITED STATES OF AMERICA         US  WISCONSIN
+    ## 2          208726          0 UNITED STATES OF AMERICA         US  WISCONSIN
+    ## 3          208726          0 UNITED STATES OF AMERICA         US       OHIO
+    ## 4          208726          0 UNITED STATES OF AMERICA         US       OHIO
+    ## 5          208726          0 UNITED STATES OF AMERICA         US       OHIO
+    ## 6          208726          0 UNITED STATES OF AMERICA         US       OHIO
+    ##   Admin1ISO Admin2Name CityName PeriodStartDate PeriodEndDate
+    ## 1     US-WI         NA       NA      2010-01-03    2010-01-09
+    ## 2     US-WI         NA       NA      2013-09-15    2013-09-21
+    ## 3     US-OH         NA       NA      2006-01-29    2006-02-04
+    ## 4     US-OH         NA       NA      2006-02-12    2006-02-18
+    ## 5     US-OH         NA       NA      2006-02-19    2006-02-25
+    ## 6     US-OH         NA       NA      2006-03-05    2006-03-11
+    ##   PartOfCumulativeCountSeries AgeRange  Subpopulation PlaceOfAcquisition
+    ## 1                           0    0-130 None specified                 NA
+    ## 2                           0    0-130 None specified                 NA
+    ## 3                           0    0-130 None specified                 NA
+    ## 4                           0    0-130 None specified                 NA
+    ## 5                           0    0-130 None specified                 NA
+    ## 6                           0    0-130 None specified                 NA
+    ##   DiagnosisCertainty                                           SourceName
+    ## 1                 NA US Nationally Notifiable Disease Surveillance System
+    ## 2                 NA US Nationally Notifiable Disease Surveillance System
+    ## 3                 NA US Nationally Notifiable Disease Surveillance System
+    ## 4                 NA US Nationally Notifiable Disease Surveillance System
+    ## 5                 NA US Nationally Notifiable Disease Surveillance System
+    ## 6                 NA US Nationally Notifiable Disease Surveillance System
+    ##   CountValue
+    ## 1          1
+    ## 2          1
+    ## 3          2
+    ## 4          3
+    ## 5          1
+    ## 6          4
 
 compactly displaying the internal structure of the dataset for closer
 analysis
 
-```{r}
+``` r
 str(tychodf)
 ```
+
+    ## 'data.frame':    41058 obs. of  20 variables:
+    ##  $ ConditionName              : chr  "Acute type A viral hepatitis" "Acute type A viral hepatitis" "Acute type A viral hepatitis" "Acute type A viral hepatitis" ...
+    ##  $ ConditionSNOMED            : int  25102003 25102003 25102003 25102003 25102003 25102003 25102003 25102003 25102003 25102003 ...
+    ##  $ PathogenName               : chr  "Human hepatitis A virus" "Human hepatitis A virus" "Human hepatitis A virus" "Human hepatitis A virus" ...
+    ##  $ PathogenTaxonID            : int  208726 208726 208726 208726 208726 208726 208726 208726 208726 208726 ...
+    ##  $ Fatalities                 : int  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ CountryName                : chr  "UNITED STATES OF AMERICA" "UNITED STATES OF AMERICA" "UNITED STATES OF AMERICA" "UNITED STATES OF AMERICA" ...
+    ##  $ CountryISO                 : chr  "US" "US" "US" "US" ...
+    ##  $ Admin1Name                 : chr  "WISCONSIN" "WISCONSIN" "OHIO" "OHIO" ...
+    ##  $ Admin1ISO                  : chr  "US-WI" "US-WI" "US-OH" "US-OH" ...
+    ##  $ Admin2Name                 : logi  NA NA NA NA NA NA ...
+    ##  $ CityName                   : logi  NA NA NA NA NA NA ...
+    ##  $ PeriodStartDate            : chr  "2010-01-03" "2013-09-15" "2006-01-29" "2006-02-12" ...
+    ##  $ PeriodEndDate              : chr  "2010-01-09" "2013-09-21" "2006-02-04" "2006-02-18" ...
+    ##  $ PartOfCumulativeCountSeries: int  0 0 0 0 0 0 0 0 0 0 ...
+    ##  $ AgeRange                   : chr  "0-130" "0-130" "0-130" "0-130" ...
+    ##  $ Subpopulation              : chr  "None specified" "None specified" "None specified" "None specified" ...
+    ##  $ PlaceOfAcquisition         : logi  NA NA NA NA NA NA ...
+    ##  $ DiagnosisCertainty         : logi  NA NA NA NA NA NA ...
+    ##  $ SourceName                 : chr  "US Nationally Notifiable Disease Surveillance System" "US Nationally Notifiable Disease Surveillance System" "US Nationally Notifiable Disease Surveillance System" "US Nationally Notifiable Disease Surveillance System" ...
+    ##  $ CountValue                 : int  1 1 2 3 1 4 4 1 4 2 ...
 
 This gives a an accurate information of the number of rows and columns
 present including the values and their format. We can decide the columns
@@ -107,19 +385,21 @@ to keep and what columns we need to transform.
 Based on the above Information - Removing the cols not required and
 fixing time to years
 
-```{r}
-
+``` r
 year <- format(as.Date(tychodf$PeriodEndDate, format="%Y-%m-%d"),"%Y")
 tychodf$Year <- year
 tychodf <- tychodf %>%
   select(ConditionName,Fatalities,Admin1Name,Year,CountValue)
 ```
 
-Get a sum of CountValue i.e. the number of recorded Hepatitis A Cases.
+Get a sum of CountValue i.e. the number of recorded Hepatitis A Cases.
 
-```{r}
+``` r
 summary(tychodf$CountValue)
 ```
+
+    ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    ##    0.00    2.00    7.00   26.79   23.00 1411.00
 
 This give a little more information about the minimum and max value of
 the hepatitis A cases reported. The Median is being 7 and Mean is 26.79
@@ -127,9 +407,11 @@ for all years for all states.
 
 Five num sum
 
-```{r}
+``` r
 fivenum(tychodf$CountValue)
 ```
+
+    ## [1]    0    2    7   23 1411
 
 The five number sum tells us about the following minimum value,
 lower-hinge value, median value, upper-hinge value and maximum value
@@ -139,7 +421,7 @@ aggregating it according to year for each region. Also removed a few
 states which had incomplete data Group by Year and create a heatmap to
 understand the rise/fall through time
 
-```{r}
+``` r
 hepaAyearsAgg <- setNames( aggregate(tychodf$CountValue,by=list(tychodf$Admin1Name,tychodf$Year), FUN=sum), c("State","Year","Cases"))
 usastatearea <- setNames(data.frame(cbind(state.name,state.region , state.area)),c("State","Region","Area in sqmi"))
 usastatearea$State %<>% tolower()
@@ -150,12 +432,26 @@ usaalldata <- subset(usaalldata, State!="wyoming" & State!="guam" & State!="new 
 head(usaalldata)
 ```
 
+    ##     State Year Cases Region Area in sqmi
+    ## 1 alabama 2010   233      2        51609
+    ## 2 alabama 2017   367      2        51609
+    ## 3 alabama 2013   191      2        51609
+    ## 4 alabama 2006   340      2        51609
+    ## 5 alabama 2015   601      2        51609
+    ## 6 alabama 2011   120      2        51609
+
 Heatmap
 
-```{r}
+``` r
 tempdf <- usaalldata
 tempdf <- filter(usaalldata,Year >=2007 & Year<=2016)
 tempdf %<>% group_by(Region,Year) %>% summarise(`Average No of Cases` = mean(Cases))
+```
+
+    ## `summarise()` has grouped output by 'Region'. You can override using the
+    ## `.groups` argument.
+
+``` r
 ylabels <- c("NorthEast","South","Midwest","West")
 
 p <- ggplot(tempdf,aes(Year, Region, fill=`Average No of Cases`)) + geom_tile()+  scale_fill_gradient(low="white", high="blue") +
@@ -164,13 +460,15 @@ options(warn=-1)
 p
 ```
 
+![](Tycho-Data-Visualization_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
 As we can see the number of cases have only reduced slightly indicating
 that the Hepatits A is still a major issue.
 
 Plotting a usa map to visualize the mean number of cases across years
 according to each state.
 
-```{r}
+``` r
 temp1 <- usaalldata
 #temp %<>% filter(Year == 2015)
 temp1 %<>% group_by(State) %>% summarise(mean = mean(Cases)) 
@@ -185,15 +483,17 @@ plot_usmap(data = temp1, values = "mean", color = "red",labels = TRUE) +
   theme(legend.position = "right", plot.title = element_text(color = "black", size = 12, face = "bold",hjust = 0.5)) + ggtitle("USA States with Mean of Hepatits A cases from 2007 to 2016")
 ```
 
+![](Tycho-Data-Visualization_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
 We get a gist of states who have been relatively on the higher side for
 the number of Hepatitis A cases aggregated over the years.
 
-In order to calculate Correlation let's load all the homelessness and
+In order to calculate Correlation let’s load all the homelessness and
 population dataset.
 
 Lets load homelessness and population dataset of 2007 to 2016
 
-```{r}
+``` r
 dfhomeless = read.csv("2007-2016-Homelessnewss-USA.csv")
 year <- format(as.Date(dfhomeless$Year, format="%d/%m/%Y"),"%Y")
 dfhomeless$Year <- year
@@ -223,12 +523,19 @@ dfhomeless <- setNames( aggregate(dfhomeless$Count,by=list(dfhomeless$State,dfho
 #new_DF
 dfhomeless$State %<>% toupper()
 head(dfhomeless)
-
 ```
+
+    ##                  State Year HomelessCount
+    ## 1               ALASKA 2007          7124
+    ## 2           CALIFORNIA 2007        103077
+    ## 3 DISTRICT OF COLUMBIA 2007          1001
+    ## 4              GEORGIA 2007         14872
+    ## 5                IDAHO 2007          6018
+    ## 6             KENTUCKY 2007          7265
 
 Loading Population Dataset
 
-```{r}
+``` r
 popall2010_19 <- read.csv("nst-est2019-alldata.csv")
 popall2010_19 <- setNames(popall2010_19[, c("NAME","POPESTIMATE2010","POPESTIMATE2011","POPESTIMATE2012","POPESTIMATE2013","POPESTIMATE2014","POPESTIMATE2015","POPESTIMATE2016")],c("NAME","2010","2011","2012","2013","2014","2015","2016"))
 popalldf2000_10 <- read.csv("st-est00int-01.csv")
@@ -268,14 +575,27 @@ combineddf$`Area in sqmi` <- as.integer(as.character(combineddf$`Area in sqmi`))
 combineddf <- subset(combineddf, State!="wyoming" & State!="guam" & State!="new york" & State!="district of columbia" & State!="minnesota" & State!="south dakota" & State !="puerto rico" & State!="north dakota")
 combineddf$Density <- combineddf$PopulationCount/combineddf$`Area in sqmi`
 head(combineddf)
-
-
 ```
+
+    ##     State Year PopulationCount Hepatitis A cases HomelessCount CasesPer10000
+    ## 1 alabama 2012         4815588               462         21826     0.9593844
+    ## 2 alabama 2007         4672840               436         18921     0.9330514
+    ## 3 alabama 2010         4785437               233         20079     0.4868939
+    ## 4 alabama 2015         4852347               601         19185     1.2385759
+    ## 5 alabama 2009         4757938               268         19472     0.5632692
+    ## 6 alabama 2011         4799069               120         23587     0.2500485
+    ##   HomelessnessPer10000 Region Area in sqmi  Density
+    ## 1             45.32364      2        51609 93.30907
+    ## 2             40.49144      2        51609 90.54312
+    ## 3             41.95855      2        51609 92.72485
+    ## 4             39.53757      2        51609 94.02133
+    ## 5             40.92529      2        51609 92.19202
+    ## 6             49.14912      2        51609 92.98899
 
 To identify the correlation between various factors we will use the
 correlation matrix. Corellation matrix
 
-```{r}
+``` r
 temp1 <- combineddf
 #temp %<>% filter(Year == 2015)
 temp1 %<>% select(`Hepatitis A cases`,PopulationCount,HomelessCount,CasesPer10000,HomelessnessPer10000,Density)
@@ -283,13 +603,30 @@ res <- cor(temp1, use="pairwise.complete.obs")
 round(res, 2)
 ```
 
+    ##                      Hepatitis A cases PopulationCount HomelessCount
+    ## Hepatitis A cases                 1.00            0.81          0.66
+    ## PopulationCount                   0.81            1.00          0.86
+    ## HomelessCount                     0.66            0.86          1.00
+    ## CasesPer10000                     0.34            0.02          0.01
+    ## HomelessnessPer10000             -0.19           -0.27          0.03
+    ## Density                           0.10            0.13          0.21
+    ##                      CasesPer10000 HomelessnessPer10000 Density
+    ## Hepatitis A cases             0.34                -0.19    0.10
+    ## PopulationCount               0.02                -0.27    0.13
+    ## HomelessCount                 0.01                 0.03    0.21
+    ## CasesPer10000                 1.00                 0.11    0.04
+    ## HomelessnessPer10000          0.11                 1.00   -0.03
+    ## Density                       0.04                -0.03    1.00
+
 From the table we can identify various correlations but we will plot a
 correation graph in order to easily visualize correlations
 
-```{r}
+``` r
 corrplot(res, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45) 
 ```
+
+![](Tycho-Data-Visualization_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 We can visualize that Homelessness, Population and Density all have
 slight correlation with Hepatitis A cases and the highest correlation
@@ -299,7 +636,7 @@ In order to view the relation between Homelessness and Hepatitis A cases
 I will plot a bar graph including mean number of cases for each state
 aggregated throughout the years.
 
-```{r}
+``` r
 temp <- combineddf
 #temp %<>% filter(Year == 2015)
 temp %<>% group_by(State) %>% summarise(mean = mean(`Hepatitis A cases`), meanHomeless = mean(HomelessCount)) 
@@ -320,8 +657,9 @@ bar1 <- (highchart() %>%
            hc_add_theme(hc_theme_538())
 )
 bar1
-
 ```
+
+![](Tycho-Data-Visualization_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 From the above graph it looks like the states having higher homelessness
 population have higher Hepatitis A cases such as California, Florida,
@@ -332,7 +670,7 @@ However here we have not take the population count into account. Lets
 make the same graph with Homelessness per 100000 and Cases per 100000
 for accurate representation.
 
-```{r}
+``` r
 temp <- combineddf
 temp %<>% filter(Year == 2016)
 temp %<>% group_by(State) %>% summarise(mean = mean(CasesPer10000), meanHomeless = mean(HomelessnessPer10000)) 
@@ -352,8 +690,9 @@ bar1 <- (highchart() %>%
            hc_add_theme(hc_theme_538())
 )
 bar1
-
 ```
+
+![](Tycho-Data-Visualization_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 The same results are now inconclusive Alaska which were at the last in
 previous graph having low homelessness and low hepatitis A cases are now
@@ -370,8 +709,7 @@ population as a factor.
 
 Two states with Highest mean number of Hepatitis A cases
 
-```{r}
-
+``` r
 temp4charts <- combineddf
 #temp4charts %<>% filter(State=='california')
 temp4charts <- temp4charts %>% select(State,Year,CasesPer10000,HomelessnessPer10000,Density)
@@ -405,11 +743,12 @@ options(warn=-1)
 plot_grid(ca, fl, labels=c("California", "Florida"), ncol = 1, nrow = 2)
 ```
 
+![](Tycho-Data-Visualization_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
 Two states having higher number of homelessness but lower number of
 Hepatitis A cases.
 
-```{r}
-
+``` r
 temp4charts <- combineddf
 #temp4charts %<>% filter(State=='california')
 temp4charts <- temp4charts %>% select(State,Year,CasesPer10000,HomelessnessPer10000,Density)
@@ -443,6 +782,8 @@ options(warn=-1)
 plot_grid(ca, fl, labels=c('Vermont', 'Oregon'), ncol = 1, nrow = 2)
 ```
 
+![](Tycho-Data-Visualization_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
 From the above 4 graphs the rise and fall of homelessness is not
 directly proportional to the rise and fall of Hepatitis A cases.
 
@@ -457,7 +798,7 @@ Although there seems to be a huge correlation between the number of
 hepatitis A cases and homelessness however most of that correlation does
 not apply once we take population into account.
 
-\
+  
 
 There is slight correlation between hepatitis A cases per 1000 and
 homelessness per 10000 however homelessness is not a direct factor for
@@ -465,4 +806,4 @@ hepatitis A and the spread is generally attributed to sanitation and the
 recent hepatitis outbreak in the USA is potentially linked with fresh
 organic strawberries branded as FreshKampo and HEB
 
-\
+  
